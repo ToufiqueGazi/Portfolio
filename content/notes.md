@@ -1,5 +1,5 @@
-# Academic Courseware & Lab Manuals
+# B.Tech CSE (AIML) SEC-M
 
-[Open Repository](https://github.com/)
+[Open Notes](https://drive.google.com/file/d/1kQDX1GAKgVXZMkDaJ5y61BGIupmRE0QO/view?usp=sharing)
 
 
