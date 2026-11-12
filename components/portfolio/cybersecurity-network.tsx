@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useRef, useSyncExternalStore, type FC } from "react";
 import { easing } from "maath";
 import { useTheme } from "@/hooks/use-theme";
-
+import { getAssetPath } from "@/helpers/path-helpers";
 function subscribeReducedMotion(callback: () => void) {
   if (typeof window === "undefined") return () => {};
   const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -137,7 +137,7 @@ export const CybersecurityNetwork: FC = () => {
           }`}
         >
           <Image
-            src="/assets/cybersecurity-network-transparent.png"
+            src={getAssetPath("/assets/cybersecurity-network-transparent.png")}
             alt="Cybersecurity Network Infrastructure and Threat Telemetry Operations (Dark Mode)"
             width={1024}
             height={578}
@@ -154,7 +154,7 @@ export const CybersecurityNetwork: FC = () => {
           }`}
         >
           <Image
-            src="/assets/cybersecurity-light-foreground.png"
+            src={getAssetPath("/assets/cybersecurity-light-foreground.png")}
             alt="Cybersecurity Network Infrastructure and Threat Telemetry Operations (Light Mode)"
             width={1024}
             height={578}
