@@ -4,6 +4,7 @@ import Image from "next/image";
 import { type FC } from "react";
 import { motion, useScroll, useSpring, useTransform } from "motion/react";
 import { useTheme } from "@/hooks/use-theme";
+import { getAssetPath } from "@/helpers/path-helpers";
 // [TEMPORARY FALLBACK PRESERVATION]
 // Previous multi-layered parallax hook preserved for fallback if needed:
 // import { useDeferredLayers } from "@/hooks/use-deferred-3d";
@@ -30,7 +31,7 @@ export const ParallaxBackground: FC = () => {
           style={{ y: backgroundY, scale: backgroundScale }}
         >
           <Image
-            src="/assets/hero-bg-scifi.jpg"
+            src={getAssetPath("/assets/hero-bg-scifi.jpg")}
             alt="Cosmic Sci-Fi Landscape with Ringed Planet and Planetary Atmosphere"
             fill
             priority
@@ -50,7 +51,7 @@ export const ParallaxBackground: FC = () => {
           style={{ y: backgroundY, scale: backgroundScale }}
         >
           <Image
-            src="/assets/hero-light-background.jpg"
+            src={getAssetPath("/assets/hero-light-background.jpg")}
             alt="Bright White and Icy-Blue Sci-Fi Landscape with Orbiting Celestial Bodies and Mountains"
             fill
             priority
