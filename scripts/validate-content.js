@@ -41,7 +41,22 @@ function parseFrontmatter(filePath) {
     }
   }
 
-  return { frontmatter: {}, body: raw };
+  // Resilient recovery if user accidentally omitted closing '---'
+  const headingMatch = raw.slice(3).search(/\r?\n#{1,6}\s+/);
+  let rawYaml = "";
+  let body = "";
+  if (headingMatch !== -1) {
+    rawYaml = raw.slice(3, 3 + headingMatch).trim();
+    body = raw.slice(3 + headingMatch).trim();
+  } else {
+    rawYaml = raw.slice(3).trim();
+  }
+  try {
+    const parsed = yaml.load(rawYaml) || {};
+    return { frontmatter: parsed, body, warning: `Missing closing '---' delimiter in ${path.basename(filePath)}` };
+  } catch (e) {
+    return { error: `Invalid YAML syntax or missing closing '---' in ${path.basename(filePath)}: ${e.message}`, frontmatter: null, body: "" };
+  }
 }
 
 function isValidUrl(string) {

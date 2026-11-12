@@ -84,7 +84,7 @@ bookChapters:
       - "Business Intelligence"
       - "Threat Containment"
       - "Enterprise Resilience"
-
+---
 
 ### Publication & Indexing Note
 

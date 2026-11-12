@@ -236,7 +236,7 @@ export const CardSwap: FC<CardSwapProps> = ({
         {/* Left: Stack Counter indicator */}
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-xs font-medium text-neutral-300 backdrop-blur-md">
-            <Sparkles className="h-3.5 w-3.5 text-coral animate-pulse" />
+            <Sparkles className="h-3.5 w-3.5 text-coral" />
             <span>
               Entry <strong className="text-white">{activeIndex + 1}</strong> of{" "}
               <strong className="text-white">{total}</strong>

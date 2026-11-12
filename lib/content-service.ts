@@ -243,6 +243,24 @@ function parseMarkdownFile<T>(filePath: string): { frontmatter: T; body: string 
           return { frontmatter: {} as T, body };
         }
       }
+
+      // Resilient recovery: user omitted or deleted closing '---'
+      // Separate YAML from the first markdown heading (# ...) if present
+      const headingMatch = fileContents.slice(3).search(/\r?\n#{1,6}\s+/);
+      let rawYaml = "";
+      let body = "";
+      if (headingMatch !== -1) {
+        rawYaml = fileContents.slice(3, 3 + headingMatch).trim();
+        body = fileContents.slice(3 + headingMatch).trim();
+      } else {
+        rawYaml = fileContents.slice(3).trim();
+      }
+      try {
+        const parsed = (yaml.load(rawYaml) as T) || ({} as T);
+        return { frontmatter: parsed, body };
+      } catch (err) {
+        console.warn(`[ContentService] Resilient unclosed frontmatter YAML parse error in ${filePath}:`, err);
+      }
     }
 
     return { frontmatter: {} as T, body: fileContents };
@@ -315,6 +333,16 @@ function resolveArray<T>(parsedArray: T[] | undefined, defaultArray: T[]): T[] {
   return defaultArray;
 }
 
+function resolveCollection<T>(fileExisted: boolean, parsedArray: T[] | undefined, defaultArray: T[]): T[] {
+  if (Array.isArray(parsedArray)) {
+    return parsedArray;
+  }
+  if (fileExisted) {
+    return [];
+  }
+  return defaultArray;
+}
+
 const DEFAULT_FLIP_WORDS = [
   "Cybersecurity",
   "IoT Systems",
@@ -353,7 +381,10 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
   };
 
   // 2. About
-  const aboutFile = path.join(contentDir, "about.md");
+  const aboutFile = fs.existsSync(path.join(contentDir, "about.md"))
+    ? path.join(contentDir, "about.md")
+    : path.join(contentDir, "profile.md");
+  const aboutExists = fs.existsSync(aboutFile);
   const aboutParsed = parseMarkdownFile<Partial<AboutContent>>(aboutFile);
   const about: AboutContent = {
     eyebrow: aboutParsed.frontmatter.eyebrow || "Faculty Overview",
@@ -370,7 +401,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       { label: "Get in Touch", href: "#contact", primary: false },
     ]),
     educationTitle: aboutParsed.frontmatter.educationTitle || "Education & Academic Pedigree",
-    degrees: resolveArray(aboutParsed.frontmatter.degrees, INITIAL_EDUCATION).map((d) => ({
+    degrees: resolveCollection(aboutExists, aboutParsed.frontmatter.degrees, INITIAL_EDUCATION).map((d) => ({
       ...d,
       degree: d.degree || "",
       institution: d.institution || "",
@@ -380,12 +411,13 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
     })),
     skillsTitle: aboutParsed.frontmatter.skillsTitle || "Research Disciplines & Computing Tools",
     skillsEyebrow: aboutParsed.frontmatter.skillsEyebrow || "Technical Proficiencies & Research Tools",
-    skills: resolveArray(aboutParsed.frontmatter.skills, SKILL_CHIPS),
+    skills: resolveCollection(aboutExists, aboutParsed.frontmatter.skills, SKILL_CHIPS),
     bio: aboutParsed.body,
   };
 
   // 3. Research
   const researchFile = path.join(contentDir, "research.md");
+  const researchExists = fs.existsSync(researchFile);
   const researchParsed = parseMarkdownFile<Partial<ResearchContent>>(researchFile);
   const research: ResearchContent = {
     eyebrow: researchParsed.frontmatter.eyebrow || "Research · 04 Focus Domains",
@@ -393,7 +425,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       researchParsed.frontmatter.title ||
       "Scholarly Inquiries, Defense Architecture & Applied Intelligence.",
     hint: resolveArray(researchParsed.frontmatter.hint, ["Scroll", "Stack"]),
-    domains: resolveArray(researchParsed.frontmatter.domains, SERVICES).map((d, idx) => ({
+    domains: resolveCollection(researchExists, researchParsed.frontmatter.domains, SERVICES).map((d, idx) => ({
       ...d,
       id: d.id || idx + 1,
       title: d.title || "Research Domain",
@@ -406,6 +438,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
 
   // 4. Publications
   const pubFile = path.join(contentDir, "publications.md");
+  const pubExists = fs.existsSync(pubFile);
   const pubParsed = parseMarkdownFile<Partial<PublicationsContent>>(pubFile);
   const publications: PublicationsContent = {
     eyebrow: pubParsed.frontmatter.eyebrow || "Peer-Reviewed Contributions",
@@ -413,7 +446,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
     summary:
       pubParsed.frontmatter.summary ||
       "Refereed journal papers, research articles, book chapters, conference presentations, and patent disclosures.",
-    publications: resolveArray(pubParsed.frontmatter.publications, INITIAL_PUBLICATIONS).map((p, idx) => ({
+    publications: resolveCollection(pubExists, pubParsed.frontmatter.publications, INITIAL_PUBLICATIONS).map((p, idx) => ({
       ...p,
       id: p.id || `pub-${idx + 1}`,
       title: p.title || "Untitled Publication",
@@ -425,7 +458,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       abstract: p.abstract || "",
       keywords: Array.isArray(p.keywords) ? p.keywords : [],
     })),
-    bookChapters: resolveArray(pubParsed.frontmatter.bookChapters, INITIAL_BOOK_CHAPTERS).map((c, idx) => ({
+    bookChapters: resolveCollection(pubExists, pubParsed.frontmatter.bookChapters, INITIAL_BOOK_CHAPTERS).map((c, idx) => ({
       ...c,
       id: c.id || `chapter-${idx + 1}`,
       title: c.title || "Untitled Book Chapter",
@@ -436,7 +469,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       abstract: c.abstract || "",
       keywords: Array.isArray(c.keywords) ? c.keywords : [],
     })),
-    conferences: resolveArray(pubParsed.frontmatter.conferences, INITIAL_CONFERENCES).map((cf, idx) => ({
+    conferences: resolveCollection(pubExists, pubParsed.frontmatter.conferences, INITIAL_CONFERENCES).map((cf, idx) => ({
       ...cf,
       id: cf.id || `conf-${idx + 1}`,
       title: cf.title || "Untitled Conference Paper",
@@ -447,7 +480,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       abstract: cf.abstract || "",
       tags: Array.isArray(cf.tags) ? cf.tags : [],
     })),
-    patents: resolveArray(pubParsed.frontmatter.patents, INITIAL_PATENTS).map((pt, idx) => ({
+    patents: resolveCollection(pubExists, pubParsed.frontmatter.patents, INITIAL_PATENTS).map((pt, idx) => ({
       ...pt,
       id: pt.id || `patent-${idx + 1}`,
       title: pt.title || "Untitled Patent",
@@ -460,11 +493,12 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
 
   // 5. Experience
   const expFile = path.join(contentDir, "experience.md");
+  const expExists = fs.existsSync(expFile);
   const expParsed = parseMarkdownFile<Partial<ExperienceContent>>(expFile);
   const experience: ExperienceContent = {
     eyebrow: expParsed.frontmatter.eyebrow || "Career Timeline",
     title: expParsed.frontmatter.title || "Academic & Professional Experience",
-    experiences: resolveArray(expParsed.frontmatter.experiences, EXPERIENCES).map((e) => ({
+    experiences: resolveCollection(expExists, expParsed.frontmatter.experiences, EXPERIENCES).map((e) => ({
       ...e,
       title: e.title || "",
       job: e.job || "",
@@ -472,7 +506,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       contents: Array.isArray(e.contents) ? e.contents : [],
     })),
     coursesTitle: expParsed.frontmatter.coursesTitle || "Undergraduate & Postgraduate Instruction",
-    coursesTaught: resolveArray(expParsed.frontmatter.coursesTaught, INITIAL_COURSES).map((c) => ({
+    coursesTaught: resolveCollection(expExists, expParsed.frontmatter.coursesTaught, INITIAL_COURSES).map((c) => ({
       ...c,
       code: c.code || "",
       name: c.name || "",
@@ -483,7 +517,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
     activitiesEyebrow: expParsed.frontmatter.activitiesEyebrow || "Pedagogy & Service",
     activitiesSectionTitle: expParsed.frontmatter.activitiesSectionTitle || "Courses Taught, Academic Service & Scholarly Profiles.",
     activitiesTitle: expParsed.frontmatter.activitiesTitle || "Academic Governance & Student Mentorship",
-    activities: resolveArray(expParsed.frontmatter.activities, INITIAL_ACTIVITIES).map((a) => ({
+    activities: resolveCollection(expExists, expParsed.frontmatter.activities, INITIAL_ACTIVITIES).map((a) => ({
       ...a,
       role: a.role || "",
       organization: a.organization || "",
@@ -494,8 +528,9 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
 
   // 6. Projects
   const projFile = path.join(contentDir, "projects.md");
+  const projExists = fs.existsSync(projFile);
   const projParsed = parseMarkdownFile<Partial<ProjectsContent>>(projFile);
-  const rawProjects = resolveArray(projParsed.frontmatter.projects, MY_PROJECTS);
+  const rawProjects = resolveCollection(projExists, projParsed.frontmatter.projects, MY_PROJECTS);
 
   const projects: ProjectsContent = {
     eyebrow: projParsed.frontmatter.eyebrow || "Selected Initiatives",
@@ -537,6 +572,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
 
   // 8. Contact
   const contactFile = path.join(contentDir, "contact.md");
+  const contactExists = fs.existsSync(contactFile);
   const contactParsed = parseMarkdownFile<Partial<ContactContent>>(contactFile);
   const contact: ContactContent = {
     email: contactParsed.frontmatter.email || "toufique.gazi@adamasuniversity.ac.in",
@@ -560,7 +596,7 @@ export function loadAllContent(contentDir: string = path.join(process.cwd(), "co
       "Verified Academic Identifiers & Indexes",
     formEyebrow: contactParsed.frontmatter.formEyebrow || "Academic Dispatch",
     formTitle: contactParsed.frontmatter.formTitle || "Send a Direct Communication",
-    socials: resolveArray(contactParsed.frontmatter.socials, INITIAL_LINKS).map((s) => ({
+    socials: resolveCollection(contactExists, contactParsed.frontmatter.socials, INITIAL_LINKS).map((s) => ({
       ...s,
       name: s.name || "",
       label: s.label || s.name || "",
