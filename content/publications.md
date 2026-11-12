@@ -37,7 +37,7 @@ publications:
       - "Neural Networks"
   - id: "pub-2025-sports-vision"
     title: "Real-Time Sports Analysis: A Novel Computer Vision System for Player Movement and Game Situations"
-    authors: "Kaushik Paul, Ranjan Bannerjee, Debmalya Mukherjee, Toufique Ahammad Gazi"
+    authors: "Toufique Ahammad Gazi , Kaushik Paul, Ranjan Bannerjee, Debmalya Mukherjee"
     year: "2025"
     type: "Journal / Research Article"
     venue: "International Journal of Computer Vision & Sports Engineering"
