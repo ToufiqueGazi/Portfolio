@@ -1,0 +1,80 @@
+---
+eyebrow: "Career Timeline"
+title: "Academic & Professional Experience"
+experiences:
+  - title: "Assistant Professor"
+    job: "Adamas University · Kolkata"
+    date: "Present"
+    contents:
+      - "Teaching core undergraduate & postgraduate courses in Network Security, Operating Systems, Machine Learning, and Data Structures."
+      - "Mentoring student capstone engineering projects, thesis defense, and competitive coding symposiums."
+      - "Conducting active research in Cyber Kill Chain threat intelligence, exploit kit analysis, and edge IoT network security."
+      - "Serving on departmental academic committees and curriculum development boards."
+  - title: "Assistant Professor / Faculty Member"
+    job: "Brainware University · Kolkata"
+    date: "Past Appointment"
+    contents:
+      - "Instructed foundational computer science, object-oriented programming, and computer architecture."
+      - "Supervised undergraduate academic projects in web systems, database design, and applied predictive modeling."
+      - "Organized student technical workshops and faculty development programs."
+  - title: "Ph.D. Researcher (Pursuing)"
+    job: "University of Engineering & Management (UEM) · Kolkata"
+    date: "Ongoing"
+    contents:
+      - "Specialized research in Cybersecurity, Zero-Day Vulnerability Modeling, and Network Observability."
+      - "Investigating exploit kits, automated kill chain disruption, and transfer learning for anomaly detection."
+      - "Publishing empirical research in indexed international journals and refereed book volumes."
+  - title: "Postgraduate & Graduate Pedigree"
+    job: "Supreme Knowledge Foundation & KGEC · West Bengal"
+    date: "Academic Roots"
+    contents:
+      - "M.Tech in Computer Science & Engineering from Supreme Knowledge Foundation Group of Institutions."
+      - "B.Tech in Information Technology from Kalyani Government Engineering College (KGEC)."
+      - "Diploma in Computer Science & Technology from Bengal Institute of Technology."
+
+coursesTitle: "Undergraduate & Postgraduate Instruction"
+coursesTaught:
+  - code: "CSE-401"
+    name: "Network Security & Cryptography"
+    level: "Undergraduate / B.Tech"
+    institution: "Adamas University"
+    topics: "Symmetric/Asymmetric Ciphers, Protocol Flaws, PKI, Firewalls, Snort IDS, Threat Modeling"
+  - code: "CSE-302"
+    name: "Operating Systems & Kernel Internals"
+    level: "Undergraduate / B.Tech"
+    institution: "Adamas University"
+    topics: "Process Synchronization, Virtual Memory, Linux System Calls, POSIX Threads, File Systems"
+  - code: "CSE-204"
+    name: "Data Structures & Algorithms"
+    level: "Undergraduate / B.Tech"
+    institution: "Adamas University"
+    topics: "Asymptotic Analysis, Balanced Trees, Graph Algorithms, Dynamic Programming"
+  - code: "AIML-502"
+    name: "Applied Machine Learning & Computer Vision"
+    level: "Postgraduate / M.Tech"
+    institution: "Adamas University"
+    topics: "Convolutional Networks, Transfer Learning, Object Detection, Dimensionality Reduction"
+
+activitiesTitle: "Academic Governance & Student Mentorship"
+activities:
+  - role: "Curriculum & Syllabus Development Committee Member"
+    organization: "Department of Computer Science & Engineering, Adamas University"
+    period: "2023 - Present"
+    description: "Contributing to the modernization of computing curricula to align with current cybersecurity and AI industry frameworks."
+  - role: "Technical Workshop Coordinator"
+    organization: "Adamas University & Brainware University"
+    period: "2022 - Present"
+    description: "Organized student workshops on 'Hands-on Penetration Testing & Packet Analysis' and 'Deep Learning with PyTorch'."
+  - role: "Peer Reviewer & Technical Session Contributor"
+    organization: "International Journals & Academic Conferences"
+    period: "2023 - Present"
+    description: "Providing rigorous peer reviews for manuscripts in cybersecurity, distributed networking, and computer vision."
+  - role: "Undergraduate Capstone Project Supervisor"
+    organization: "School of Engineering & Technology"
+    period: "Ongoing"
+    description: "Mentoring final-year engineering cohorts on thesis development, paper drafting, and software architecture."
+---
+
+### Experience Statement
+
+Dedicated to cultivating analytical rigor, ethical engineering practices, and research-oriented thinking among future computer science professionals.
