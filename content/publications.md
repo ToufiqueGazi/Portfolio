@@ -71,7 +71,7 @@ bookChapters:
   - id: "chapter-igi-cyberdefence"
     title: "A Study on Cyber Defence Curse for Online Attackers"
     bookTitle: "Strengthening Industrial Cybersecurity to Protect Business Intelligence"
-    authors: "Ranjan Banerjee, Rabindranath Sahu, Toufique Ahammad Gazi"
+    authors: "Toufique Ahammad Gazi , Ranjan Banerjee, Rabindranath Sahu"
     publisher: "IGI Global"
     year: "2024"
     isbn: "9781668499252"
@@ -85,44 +85,6 @@ bookChapters:
       - "Threat Containment"
       - "Enterprise Resilience"
 
-conferences:
-  - id: "conf-cyber-observability"
-    title: "Network Observability Paradigms in Modern Cloud-Native Topologies"
-    conference: "International Conference on Advanced Computing, Communication & Security"
-    year: "2024"
-    role: "Paper Presenter & Session Contributor"
-    location: "Kolkata, India"
-    abstract: "Explored real-time eBPF-based kernel observability techniques to detect covert exfiltration channels in Kubernetes clusters with negligible CPU overhead."
-    tags:
-      - "Cloud Security"
-      - "eBPF"
-      - "Network Observability"
-      - "Container Security"
-  - id: "conf-iot-security"
-    title: "Lightweight Cryptographic Handshakes for Resource-Constrained IoT Sensors"
-    conference: "National Symposium on Secure Distributed Computing"
-    year: "2023"
-    role: "Speaker"
-    location: "West Bengal, India"
-    abstract: "Evaluated lightweight elliptic-curve variants tailored for 8-bit and 32-bit microcontroller nodes operating in low-bandwidth wireless sensor networks."
-    tags:
-      - "IoT"
-      - "Lightweight Cryptography"
-      - "WSN"
-      - "Sensor Networks"
-
-patents:
-  - id: "patent-pipeline-template"
-    title: "Method and System for Automated Threat Telemetry Mapping in Distributed Computing Environments"
-    status: "Under Institutional IPR Review / Provisional Stage"
-    applicationNumber: "Details pending public gazette publication"
-    filingDate: "To be updated upon gazette listing"
-    jurisdiction: "Indian Patent Office (IPO)"
-    inventors:
-      - "Toufique Ahammad Gazi"
-      - "Co-inventors as per institutional submission"
-    abstract: "A novel architectural design for low-overhead kernel telemetry extraction and graph-based threat correlation in cloud networks."
----
 
 ### Publication & Indexing Note
 
